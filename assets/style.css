@@ -49,3 +49,24 @@
   color:#F8FAFC !important;
 }
 .footer { text-align:center; color:#94A3B8; font-size:.86rem; margin-top:1.2rem; }
+
+
+
+footer {
+  text-align: center;
+  color: #94A3B8;
+  font-size: .86rem;
+  margin-top: 1.2rem;
+}
+.welcome-top-only {
+  text-align: center;
+  color: white;
+  font-size: 5rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-top: 10px;
+  margin-bottom: 25px;
+}
+
+
+
