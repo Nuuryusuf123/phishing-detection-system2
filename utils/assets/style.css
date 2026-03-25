@@ -1,0 +1,51 @@
+.stApp {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(34,193,255,0.16), transparent 24%),
+    radial-gradient(circle at 100% 0%, rgba(59,130,246,0.15), transparent 22%),
+    linear-gradient(180deg, #07111E 0%, #0A1524 100%);
+}
+.block-container { padding-top: 1rem !important; padding-bottom: 2rem !important; }
+.hero, .card {
+  background: linear-gradient(180deg, rgba(11,23,39,0.95), rgba(8,17,30,0.92));
+  border: 1px solid rgba(148,163,184,0.14);
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.30);
+}
+.hero { padding: 28px; margin-bottom: 16px; }
+.card { padding: 18px 20px; margin-bottom: 16px; }
+.title-main { font-size: 2.4rem; font-weight: 900; color: #F8FAFC; line-height: 1.1; }
+.title-sub { color: #CBD5E1; font-size: 1rem; margin-top: 0.35rem; }
+.pill {
+  display:inline-block; padding:6px 12px; border-radius:999px; font-size:.82rem; font-weight:800; margin-right:8px; margin-top:8px;
+  border:1px solid rgba(255,255,255,.08)
+}
+.pill-a{background:rgba(34,193,255,.16);color:#A5F3FC}
+.pill-b{background:rgba(59,130,246,.16);color:#BFDBFE}
+.pill-c{background:rgba(34,197,94,.16);color:#BBF7D0}
+.pill-d{background:rgba(239,68,68,.16);color:#FCA5A5}
+.kpi {
+  background: linear-gradient(180deg, rgba(13,24,40,0.95), rgba(8,17,31,0.90));
+  border: 1px solid rgba(148,163,184,0.14);
+  border-radius: 22px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.24);
+  padding: 16px 18px;
+  min-height: 112px;
+}
+.kpi-label { color:#9FB0C8; font-size:.92rem; margin-bottom:.2rem; }
+.kpi-value { color:#F8FAFC; font-size:1.8rem; font-weight:800; }
+.kpi-note { color:#CBD5E1; font-size:.84rem; }
+.stButton > button, .stDownloadButton > button {
+  border-radius: 16px !important;
+  border:1px solid rgba(148,163,184,.16) !important;
+  background:linear-gradient(135deg, rgba(34,193,255,.22), rgba(59,130,246,.14)) !important;
+  color:#F8FAFC !important;
+  font-weight:800 !important;
+  padding:.72rem 1.05rem !important;
+}
+.stTextInput input, .stTextArea textarea {
+  border-radius:16px !important;
+  background:rgba(10,20,35,.92) !important;
+  border:1px solid rgba(148,163,184,.18) !important;
+  color:#F8FAFC !important;
+}
+.footer { text-align:center; color:#94A3B8; font-size:.86rem; margin-top:1.2rem; }
