@@ -2,19 +2,26 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from utils.helpers import load_css, hero, card_open, card_close, metric_card, footer
+from utils.helpers import load_css, card_open, card_close, metric_card, footer
 from utils.db import init_db, authenticate, save_history, load_history
 from utils.sms_bert import bert_available, predict_sms_bert
 from utils.url_xgb import xgb_available, predict_url
 from utils.reporting import build_pdf
 
-st.set_page_config(page_title="Hybrid Phishing Detection System", page_icon="🛡️", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(
+    page_title="Hybrid Phishing Detection System",
+    page_icon="🛡️",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 load_css()
 init_db()
 
 for key, default in {"logged_in": False, "role": None, "username": None}.items():
     if key not in st.session_state:
         st.session_state[key] = default
+
 
 def pill(label):
     if label == "Threat Detected":
@@ -23,69 +30,97 @@ def pill(label):
         return "<span class='pill pill-c'>Safe</span>"
     return "<span class='pill pill-a'>No Result</span>"
 
+
 def gauge(score, title, color="#22C1FF"):
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
-        value=score*100,
-        number={"suffix":"%"},
-        title={"text":title},
+        value=score * 100,
+        number={"suffix": "%"},
+        title={"text": title},
         gauge={
-            "axis":{"range":[0,100]},
-            "bar":{"color":color},
-            "steps":[
-                {"range":[0,49],"color":"#123A2D"},
-                {"range":[49,70],"color":"#3B2B12"},
-                {"range":[70,100],"color":"#4A1212"},
+            "axis": {"range": [0, 100]},
+            "bar": {"color": color},
+            "steps": [
+                {"range": [0, 49], "color": "#123A2D"},
+                {"range": [49, 70], "color": "#3B2B12"},
+                {"range": [70, 100], "color": "#4A1212"},
             ]
         }
     ))
-    fig.update_layout(height=290, paper_bgcolor="rgba(0,0,0,0)", margin=dict(l=8,r=8,t=35,b=8))
+    fig.update_layout(
+        height=290,
+        paper_bgcolor="rgba(0,0,0,0)",
+        margin=dict(l=8, r=8, t=35, b=8)
+    )
     return fig
 
-hero("🛡️ Hybrid ML-Based Phishing Detection System", "Login-first professional cybersecurity web app using BERT + XGBoost + Streamlit")
 
+# ---------------- CUSTOM LOGIN PAGE ----------------
 if not st.session_state.logged_in:
-    left, right = st.columns([1.15, 1.0], gap="large")
+    st.markdown("""
+    <div class="top-main-banner">
+        <div class="top-main-title">
+            <span class="shield-icon">🛡️</span>
+            Hybrid ML-Based Phishing Detection System
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="welcome-top-only">WELCOME</div>
+    """, unsafe_allow_html=True)
+
+    left, center, right = st.columns([1, 1.2, 1], gap="large")
+
     with left:
-        card_open()
-        st.subheader("Welcome")
-        st.write(
-            "This is the final graduate-level platform for phishing detection in mobile SMS messages and URLs. "
-            "You must enter through the login page. After login, all web app functions become available."
-        )
-        st.markdown(
-            "- **Real Login**\n"
-            "- **BERT SMS Detection**\n"
-            "- **XGBoost URL Detection**\n"
-            "- **Hybrid Decision Module**\n"
-            "- **History, Reports, and Admin Analytics**"
-        )
-        st.markdown("**admin / admin123**")
-        st.markdown("**student / student123**")
-        card_close()
+        st.empty()
+
+    with center:
+        st.markdown("""
+        <div class="login-card">
+            <div class="login-card-title">🔐 Login / Register</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        tab1, tab2, tab3, tab4 = st.tabs(["Login", "Sign Up", "Forgot Password", "Verify Email"])
+
+        with tab1:
+            username = st.text_input("Username", key="login_username")
+            password = st.text_input("Password", type="password", key="login_password")
+
+            if st.button("Login", use_container_width=True, key="login_btn"):
+                ok, role = authenticate(username, password)
+                if ok:
+                    st.session_state.logged_in = True
+                    st.session_state.role = role
+                    st.session_state.username = username
+                    st.success("Login successful.")
+                    st.rerun()
+                else:
+                    st.error("Invalid username or password.")
+
+        with tab2:
+            st.info("Sign Up page will work after full user-management integration.")
+
+        with tab3:
+            st.info("Forgot Password page will work after full reset-password integration.")
+
+        with tab4:
+            st.info("Verify Email page will work after email verification integration.")
+
     with right:
-        card_open()
-        st.subheader("Login")
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-        if st.button("Login", use_container_width=True):
-            ok, role = authenticate(username, password)
-            if ok:
-                st.session_state.logged_in = True
-                st.session_state.role = role
-                st.session_state.username = username
-                st.success("Login successful.")
-                st.rerun()
-            else:
-                st.error("Invalid username or password.")
-        card_close()
+        st.empty()
+
     footer()
     st.stop()
 
+
+# ---------------- SIDEBAR ----------------
 with st.sidebar:
     st.image("assets/logo.svg", width=108)
     st.markdown(f"### {st.session_state.username}")
     st.caption(f"Role: {st.session_state.role}")
+
     page = st.radio("Navigation", [
         "System Overview",
         "Dashboard",
@@ -96,6 +131,7 @@ with st.sidebar:
         "Download Report",
         "Admin Dashboard",
     ])
+
     if st.button("Logout", use_container_width=True):
         st.session_state.logged_in = False
         st.session_state.role = None
@@ -106,9 +142,13 @@ history = load_history()
 
 if page == "System Overview":
     c1, c2, c3 = st.columns(3)
-    with c1: metric_card("SMS Dataset", "10,000", "Ready for BERT training/testing")
-    with c2: metric_card("URL Dataset", "10,000", "Ready for XGBoost training/testing")
-    with c3: metric_card("Deployment", "Streamlit", "Professional login-first web app")
+    with c1:
+        metric_card("SMS Dataset", "10,000", "Ready for BERT training/testing")
+    with c2:
+        metric_card("URL Dataset", "10,000", "Ready for XGBoost training/testing")
+    with c3:
+        metric_card("Deployment", "Streamlit", "Professional login-first web app")
+
     card_open()
     st.subheader("Training and Testing Workflow")
     st.write("Train and test both models locally in VS Code inside the `scripts/` folder.")
@@ -118,10 +158,14 @@ if page == "System Overview":
 
 elif page == "Dashboard":
     c1, c2, c3, c4 = st.columns(4)
-    with c1: metric_card("Total Scans", str(len(history)), "All recorded scans")
-    with c2: metric_card("SMS Scans", str(len(history[history['input_type']=='SMS']) if len(history) else 0), "BERT activity")
-    with c3: metric_card("URL Scans", str(len(history[history['input_type']=='URL']) if len(history) else 0), "XGBoost activity")
-    with c4: metric_card("Threats", str(len(history[history['prediction']=='Threat Detected']) if len(history) else 0), "Flagged malicious content")
+    with c1:
+        metric_card("Total Scans", str(len(history)), "All recorded scans")
+    with c2:
+        metric_card("SMS Scans", str(len(history[history['input_type'] == 'SMS']) if len(history) else 0), "BERT activity")
+    with c3:
+        metric_card("URL Scans", str(len(history[history['input_type'] == 'URL']) if len(history) else 0), "XGBoost activity")
+    with c4:
+        metric_card("Threats", str(len(history[history['prediction'] == 'Threat Detected']) if len(history) else 0), "Flagged malicious content")
 
     if len(history) > 0:
         a, b = st.columns(2)
@@ -176,11 +220,11 @@ elif page == "URL Detection":
         num_hyphens = st.number_input("Number of hyphens", min_value=0, value=2)
         num_at = st.number_input("Number of @ symbols", min_value=0, value=0)
         num_digits = st.number_input("Number of digits", min_value=0, value=6)
-        has_https = st.selectbox("Uses HTTPS", [1,0], index=0)
+        has_https = st.selectbox("Uses HTTPS", [1, 0], index=0)
     with c3:
         entropy = st.number_input("Entropy", min_value=0.0, value=4.6, step=0.1)
-        has_login_word = st.selectbox("Contains 'login'", [1,0], index=1)
-        has_verify_word = st.selectbox("Contains 'verify'", [1,0], index=1)
+        has_login_word = st.selectbox("Contains 'login'", [1, 0], index=1)
+        has_verify_word = st.selectbox("Contains 'verify'", [1, 0], index=1)
     run = st.button("Run URL Detection", use_container_width=True)
     card_close()
 
@@ -233,11 +277,11 @@ elif page == "Hybrid Detection":
         num_hyphens = st.number_input("Number of hyphens", min_value=0, value=2, key="h5")
         num_at = st.number_input("Number of @ symbols", min_value=0, value=0, key="h6")
         num_digits = st.number_input("Number of digits", min_value=0, value=6, key="h7")
-        has_https = st.selectbox("Uses HTTPS", [1,0], index=0, key="h8")
+        has_https = st.selectbox("Uses HTTPS", [1, 0], index=0, key="h8")
     with c3:
         entropy = st.number_input("Entropy", min_value=0.0, value=4.6, step=0.1, key="h9")
-        has_login_word = st.selectbox("Contains 'login'", [1,0], index=1, key="h10")
-        has_verify_word = st.selectbox("Contains 'verify'", [1,0], index=1, key="h11")
+        has_login_word = st.selectbox("Contains 'login'", [1, 0], index=1, key="h10")
+        has_verify_word = st.selectbox("Contains 'verify'", [1, 0], index=1, key="h11")
     run = st.button("Run Hybrid Detection", use_container_width=True)
     card_close()
 
@@ -267,13 +311,28 @@ elif page == "Hybrid Detection":
 
             a, b, c = st.columns(3)
             with a:
-                card_open(); st.subheader("SMS"); st.markdown(pill(sms_label), unsafe_allow_html=True); st.write(f"Score: {sms_score:.2%}" if sms_score is not None else "No SMS"); card_close()
+                card_open()
+                st.subheader("SMS")
+                st.markdown(pill(sms_label), unsafe_allow_html=True)
+                st.write(f"Score: {sms_score:.2%}" if sms_score is not None else "No SMS")
+                card_close()
             with b:
-                card_open(); st.subheader("URL"); st.markdown(pill(url_label), unsafe_allow_html=True); st.write(f"Score: {url_score:.2%}"); card_close()
+                card_open()
+                st.subheader("URL")
+                st.markdown(pill(url_label), unsafe_allow_html=True)
+                st.write(f"Score: {url_score:.2%}")
+                card_close()
             with c:
-                card_open(); st.subheader("Hybrid"); st.markdown(pill(final_label), unsafe_allow_html=True); st.write(f"Final: {final_score:.2%}"); card_close()
+                card_open()
+                st.subheader("Hybrid")
+                st.markdown(pill(final_label), unsafe_allow_html=True)
+                st.write(f"Final: {final_score:.2%}")
+                card_close()
 
-            chart_df = pd.DataFrame({"module":["SMS","URL","Hybrid"], "score":[0 if sms_score is None else sms_score*100, url_score*100, final_score*100]})
+            chart_df = pd.DataFrame({
+                "module": ["SMS", "URL", "Hybrid"],
+                "score": [0 if sms_score is None else sms_score * 100, url_score * 100, final_score * 100]
+            })
             fig = px.bar(chart_df, x="module", y="score", title="Hybrid Confidence Comparison")
             fig.update_layout(height=340, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
             st.plotly_chart(fig, use_container_width=True)
