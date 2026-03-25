@@ -66,14 +66,30 @@ if not st.session_state.logged_in:
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="welcome-top-only">WELCOME</div>
-    """, unsafe_allow_html=True)
-
-    left, center, right = st.columns([1, 1.2, 1], gap="large")
+    # WELCOME left side like screenshot
+    left, center, right = st.columns([0.9, 1.2, 0.45], gap="large")
 
     with left:
-        st.empty()
+        st.markdown("""
+        <div style="
+            display:flex;
+            align-items:center;
+            justify-content:flex-start;
+            min-height:520px;
+            padding-left:10px;
+        ">
+            <div style="
+                color:white;
+                font-size:5rem;
+                font-weight:900;
+                letter-spacing:2px;
+                text-align:left;
+                line-height:1;
+            ">
+                WELCOME
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
     with center:
         st.markdown("""
