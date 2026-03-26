@@ -127,7 +127,7 @@ if not st.session_state.logged_in:
     left, right = st.columns([1.15, 1.0], gap="large")
 
     with left:
-        card_open()
+        # card_open()
         st.subheader("🚀 Welcome")
         # st.write(
         #     "This is the final graduate-level platform for phishing detection in "
