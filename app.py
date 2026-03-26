@@ -139,7 +139,7 @@ if not st.session_state.logged_in:
         )
 
     with center:
-        card_open()
+        # card_open()
         st.markdown(
             "<h3 style='text-align:center;'>🔐 Login / Register</h3>",
             unsafe_allow_html=True
