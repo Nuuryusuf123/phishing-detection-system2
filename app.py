@@ -129,22 +129,22 @@ if not st.session_state.logged_in:
     with left:
         card_open()
         st.subheader("🚀 Welcome")
-        st.write(
-            "This is the final graduate-level platform for phishing detection in "
-            "mobile SMS messages and URLs. The system starts from the login page, "
-            "and after login all features become available."
-        )
-        st.markdown(
-            "- **Real Login**\n"
-            "- **BERT SMS Detection**\n"
-            "- **XGBoost URL Detection**\n"
-            "- **Hybrid Decision Module**\n"
-            "- **History, Reports, and Admin Analytics**\n"
-            "- **Advanced Roles and User Management**"
-        )
-        st.markdown("**admin / admin123**")
-        st.markdown("**student / student123**")
-        card_close()
+        # st.write(
+        #     "This is the final graduate-level platform for phishing detection in "
+        #     "mobile SMS messages and URLs. The system starts from the login page, "
+        #     "and after login all features become available."
+        # )
+        # st.markdown(
+        #     "- **Real Login**\n"
+        #     "- **BERT SMS Detection**\n"
+        #     "- **XGBoost URL Detection**\n"
+        #     "- **Hybrid Decision Module**\n"
+        #     "- **History, Reports, and Admin Analytics**\n"
+        #     "- **Advanced Roles and User Management**"
+        # )
+        # st.markdown("**admin / admin123**")
+        # st.markdown("**student / student123**")
+        # card_close()
 
     with right:
         card_open()
