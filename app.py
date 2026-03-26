@@ -119,36 +119,31 @@ def require_analyst_or_admin():
 
 hero(
     "🛡️ Hybrid ML-Based Phishing Detection System",
-    "Login-first professional cybersecurity web app using BERT + XGBoost + Streamlit"
+    ""
 )
 
 # ---------------- LOGIN PAGE ----------------
 if not st.session_state.logged_in:
-    left, right = st.columns([1.15, 1.0], gap="large")
+    left, center, right = st.columns([0.9, 1.2, 0.9], gap="large")
 
     with left:
-        # card_open()
-        st.subheader("🚀 Welcome")
-        # st.write(
-        #     "This is the final graduate-level platform for phishing detection in "
-        #     "mobile SMS messages and URLs. The system starts from the login page, "
-        #     "and after login all features become available."
-        # )
-        # st.markdown(
-        #     "- **Real Login**\n"
-        #     "- **BERT SMS Detection**\n"
-        #     "- **XGBoost URL Detection**\n"
-        #     "- **Hybrid Decision Module**\n"
-        #     "- **History, Reports, and Admin Analytics**\n"
-        #     "- **Advanced Roles and User Management**"
-        # )
-        # st.markdown("**admin / admin123**")
-        # st.markdown("**student / student123**")
-        # card_close()
+        st.markdown(
+            """
+            <div style="display:flex; align-items:center; min-height:420px; justify-content:flex-start;">
+                <div style="font-size:2.3rem; font-weight:700; color:white; text-align:left;">
+                    🚀 Welcome
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-    with right:
+    with center:
         card_open()
-        st.subheader("🔐 Login / Register")
+        st.markdown(
+            "<h3 style='text-align:center;'>🔐 Login / Register</h3>",
+            unsafe_allow_html=True
+        )
 
         tab1, tab2, tab3, tab4 = st.tabs(["Login", "Sign Up", "Forgot Password", "Verify Email"])
 
@@ -240,6 +235,9 @@ if not st.session_state.logged_in:
 
         card_close()
 
+    with right:
+        st.empty()
+
     footer()
     st.stop()
 
@@ -297,8 +295,8 @@ if page == "System Overview":
         metric_card("SMS Dataset", "10,000", "Ready for BERT training/testing")
     with c2:
         metric_card("URL Dataset", "10,000", "Ready for XGBoost training/testing")
-    with c3:
-        metric_card("Deployment", "Streamlit", "Professional login-first web app")
+    # with c3:
+    #     metric_card("Deployment", "Streamlit", "Professional login-first web app")
 
     card_open()
     st.subheader("📘 Training and Testing Workflow")
