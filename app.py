@@ -231,7 +231,7 @@ with st.sidebar:
         "Dashboard",
         "SMS Detection",
         "URL Detection",
-        "Change Password",
+         "Hybrid Detection",
         "Detection History",
         "Download Report",
         "Admin Dashboard",
