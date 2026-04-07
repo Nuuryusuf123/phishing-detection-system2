@@ -21,3 +21,5 @@ def predict_url(features: dict):
         for c, imp, val in pairs:
             explain.append({"feature": c, "importance": float(imp), "value": float(val)})
     return label, score, explain
+    print("Expected columns:", cols)
+print("Incoming feature keys:", list(features.keys()))
